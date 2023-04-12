@@ -1,9 +1,13 @@
 package sky.pro.list.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Employee {
+    @JsonProperty("first")
     private String firstName;
+    @JsonProperty("last")
     private String lastName;
 
     public Employee(String firstName, String lastName) {

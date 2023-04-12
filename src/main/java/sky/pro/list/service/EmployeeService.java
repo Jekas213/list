@@ -7,6 +7,7 @@ import sky.pro.list.exceptions.EmployeeNotFoundException;
 import sky.pro.list.exceptions.EmployeeStorageIsFullException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,40 +15,38 @@ public class EmployeeService {
     List<Employee> employees = new ArrayList<>();
 
     public Employee add(String firstName, String lastName) {
+       Employee employee = new Employee(firstName, lastName);
         final int maxSize = 2;
         if (employees.size() >= maxSize) {
             throw new EmployeeStorageIsFullException();
         }
-        if (checkFind(firstName, lastName)) {
+        if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException();
         }
-        employees.add(new Employee(firstName, lastName));
-        return new Employee(firstName, lastName);
+        employees.add(employee);
+        return employee;
     }
 
     public Employee remove(String firstName, String lastName) {
-
-        if (!checkFind(firstName, lastName)) {
+        Employee employee = new Employee(firstName, lastName);
+        if (!employees.contains(employee)) {
             throw new EmployeeNotFoundException();
         }
-        employees.remove(new Employee(firstName, lastName));
-        return new Employee(firstName, lastName);
+        employees.remove(employee);
+        return employee;
     }
 
     public Employee find(String firstName, String lastName) {
-
-        if (!checkFind(firstName, lastName)) {
+        Employee employee = new Employee(firstName, lastName);
+        if (!employees.contains(employee)) {
             throw new EmployeeNotFoundException();
         }
-        return new Employee(firstName, lastName);
+        return employee;
     }
 
     public List<Employee> showAll() {
-        return employees;
+        return Collections.unmodifiableList(employees);
     }
 
-    private boolean checkFind(String firstName, String lastName) {
-        return employees.contains(new Employee(firstName, lastName));
-    }
 
 }
